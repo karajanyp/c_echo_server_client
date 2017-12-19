@@ -22,6 +22,29 @@ int main()
     servaddr.sin_addr.s_addr = htons(INADDR_ANY);   //bind to all interfaces
     servaddr.sin_port = htons(22000);
     
+    int opt_val = 1;
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof opt_val);
+    
+    // int setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen);
+    
+    // As for parameters, s is the socket you're talking about, level should be set to SOL_SOCKET. Then you set the optname to the name you're interested in. Again, see your man page for all the options, but here are some of the most fun ones:
+
+    // SO_BINDTODEVICE
+
+    // Bind this socket to a symbolic device name like eth0 instead of using bind() to bind it to an IP address. Type the command ifconfig under Unix to see the device names.
+
+    // SO_REUSEADDR
+
+    // Allows other sockets to bind() to this port, unless there is an active listening socket bound to the port already. This enables you to get around those "Address already in use" error messages when you try to restart your server after a crash.
+
+    // SO_BROADCAST
+
+    // Allows UDP datagram (SOCK_DGRAM) sockets to send and receive packets sent to and from the broadcast address. Does nothing—NOTHING!!—to TCP stream sockets! Hahaha!
+
+    // As for the parameter optval, it's usually a pointer to an int indicating the value in question. For booleans, zero is false, and non-zero is true. And that's an absolute fact, unless it's different on your system. If there is no parameter to be passed, optval can be NULL.
+
+    // The final parameter, optlen, should be set to the length of optval, probably sizeof(int), but varies depending on the option. Note that in the case of getsockopt(), this is a pointer to a socklen_t, and it specifies the maximum size object that will be stored in optval (to prevent buffer overflows). And getsockopt() will modify the value of optlen to reflect the number of bytes actually set.
+   
     bind(listen_fd, (struct sockaddr *) &servaddr, sizeof(servaddr));
     
     listen(listen_fd, 10);
