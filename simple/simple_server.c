@@ -8,7 +8,6 @@
 
 int main()
 {
-    
     char str[100];
     int listen_fd, comm_fd;
     
@@ -19,7 +18,10 @@ int main()
     bzero( &servaddr, sizeof(servaddr));
     
     servaddr.sin_family = AF_INET;
+    //The htons() function converts the unsigned short integer hostshort from host byte order to network byte order.
     servaddr.sin_addr.s_addr = htons(INADDR_ANY);   //bind to all interfaces
+    //The inet_addr() function converts the Internet host address cp from IPv4 numbers-and-dots notation into binary data in network byte order. 
+    //servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     servaddr.sin_port = htons(22000);
     
     int opt_val = 1;
