@@ -5,6 +5,7 @@
 #include <netdb.h>
 #include <stdio.h>
 #include<string.h>
+#include <unistd.h>
 
 int main()
 {
@@ -25,7 +26,7 @@ int main()
     servaddr.sin_port = htons(22000);
     
     int opt_val = 1;
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof opt_val);
+    setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof opt_val);
     
     // int setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen);
     
